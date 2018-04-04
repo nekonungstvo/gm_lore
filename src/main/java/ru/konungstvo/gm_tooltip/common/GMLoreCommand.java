@@ -1,4 +1,4 @@
-package ru.konungstvo.gm_tooltip.core;
+package ru.konungstvo.gm_tooltip.common;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -6,13 +6,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LoreCommand extends CommandBase {
+public class GMLoreCommand extends CommandBase {
     public String getCommandName() {
         return "gm_lore";
     }

@@ -4,7 +4,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import ru.konungstvo.gm_tooltip.core.CommonProxy;
+import ru.konungstvo.gm_tooltip.common.CommonProxy;
 
 @Mod(modid = GMLoreMod.MODID, version = GMLoreMod.VERSION)
 public class GMLoreMod {
@@ -12,8 +12,8 @@ public class GMLoreMod {
     public static final String VERSION = "1.0";
 
     @SidedProxy(
-            clientSide = "ru.konungstvo.gm_tooltip.core.ClientProxy",
-            serverSide = "ru.konungstvo.gm_tooltip.core.CommonProxy"
+            clientSide = "ru.konungstvo.gm_tooltip.client.ClientProxy",
+            serverSide = "ru.konungstvo.gm_tooltip.common.CommonProxy"
     )
     protected static CommonProxy proxy;
 
