@@ -4,6 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import ru.konungstvo.gm_tooltip.common.LoreContainer;
 
 public class LoreGui extends GuiContainer {
     private static final ResourceLocation loreGuiTexture = new ResourceLocation(
@@ -11,8 +12,7 @@ public class LoreGui extends GuiContainer {
     );
 
     public LoreGui(InventoryPlayer inventory) {
-        super(new ContainerLore(inventory));
-        this.allowUserInput = true;
+        super(new LoreContainer(inventory));
     }
 
     @Override
