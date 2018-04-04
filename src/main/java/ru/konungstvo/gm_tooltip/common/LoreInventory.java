@@ -12,6 +12,10 @@ public class LoreInventory implements IInventory {
         return 1;
     }
 
+    public ItemStack getStack() {
+        return item;
+    }
+
     @Override
     public ItemStack getStackInSlot(int i) {
         return item;
@@ -70,6 +74,7 @@ public class LoreInventory implements IInventory {
 
     @Override
     public void closeInventory() {
+
     }
 
     @Override
