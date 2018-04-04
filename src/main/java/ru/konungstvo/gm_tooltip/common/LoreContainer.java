@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class LoreContainer extends Container {
-    LoreInventory processInv = new LoreInventory();
+    private LoreInventory processInv = new LoreInventory();
 
     public LoreContainer(InventoryPlayer inventory) {
         this.addSlotToContainer(new Slot(processInv, 0, 9, 9));
