@@ -41,9 +41,9 @@ public class GuiMultilineTextField extends Gui {
         }
     }
 
-    public void mouseClicked(int p_mouseClicked_1_, int p_mouseClicked_2_, int p_mouseClicked_3_) {
+    public void mouseClicked(int x, int y, int z) {
         for (int i = 0; i < this.amount; i++) {
-            lines[i].mouseClicked(p_mouseClicked_1_, p_mouseClicked_2_, p_mouseClicked_3_);
+            lines[i].mouseClicked(x, y, z);
         }
     }
 
