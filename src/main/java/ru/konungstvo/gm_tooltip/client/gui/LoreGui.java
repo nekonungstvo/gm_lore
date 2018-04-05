@@ -54,7 +54,7 @@ public class LoreGui extends GuiContainer {
                 shiftX + PADDING,
                 shiftY + PADDING + SLOT_SIZE + PADDING,
                 this.xSize - 2 * PADDING,
-                50
+                70
         );
     }
 
