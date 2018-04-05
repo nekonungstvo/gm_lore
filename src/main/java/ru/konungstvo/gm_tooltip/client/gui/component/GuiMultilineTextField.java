@@ -53,9 +53,9 @@ public class GuiMultilineTextField extends Gui {
         }
     }
 
-    public void textboxKeyTyped(char p_textboxKeyTyped_1_, int p_textboxKeyTyped_2_) {
+    public void textboxKeyTyped(char character, int code) {
         for (int i = 0; i < this.amount; i++) {
-            lines[i].textboxKeyTyped(p_textboxKeyTyped_1_, p_textboxKeyTyped_2_);
+            lines[i].textboxKeyTyped(character, code);
         }
     }
 }
