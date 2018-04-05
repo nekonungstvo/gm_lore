@@ -3,7 +3,7 @@ package ru.konungstvo.gm_tooltip.common;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import ru.konungstvo.gm_tooltip.client.LoreGui;
+import ru.konungstvo.gm_tooltip.client.gui.LoreGui;
 
 public class LoreGuiHandler implements IGuiHandler {
     @Override
