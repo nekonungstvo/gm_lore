@@ -28,7 +28,7 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public void test(ServerChatEvent event) {
+    public void open_lore(ServerChatEvent event) {
         EntityPlayer player = event.player;
         player.openGui(
                 instance,
@@ -38,5 +38,6 @@ public class CommonProxy {
                 (int) player.posY,
                 (int) player.posZ
         );
+        event.setCanceled(true);
     }
 }

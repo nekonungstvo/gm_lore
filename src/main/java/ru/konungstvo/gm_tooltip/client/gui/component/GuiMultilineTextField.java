@@ -5,26 +5,13 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiTextField;
 
 public class GuiMultilineTextField extends Gui {
-    private FontRenderer fontRenderer;
-    private int xPosition;
-    private int yPosition;
-
-    private int width;
-    private int height;
-
-    private int amount = 0;
+    private int shift = 0;
     private GuiTextField[] lines;
 
     public GuiMultilineTextField(FontRenderer fontRenderer, int xPosition, int yPosition, int width, int height) {
-        this.fontRenderer = fontRenderer;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.width = width;
-        this.height = height;
-
-        this.amount = height / fontRenderer.FONT_HEIGHT;
+        int amount = height / fontRenderer.FONT_HEIGHT;
         this.lines = new GuiTextField[amount];
-        for (int i = 0; i < this.amount; i++) {
+        for (int i = 0; i < amount; i++) {
             lines[i] = new GuiTextField(
                     fontRenderer,
                     xPosition,
@@ -36,26 +23,26 @@ public class GuiMultilineTextField extends Gui {
     }
 
     public void drawTextBox() {
-        for (int i = 0; i < this.amount; i++) {
-            lines[i].drawTextBox();
+        for (GuiTextField line : this.lines) {
+            line.drawTextBox();
         }
     }
 
     public void mouseClicked(int x, int y, int z) {
-        for (int i = 0; i < this.amount; i++) {
-            lines[i].mouseClicked(x, y, z);
+        for (GuiTextField line : this.lines) {
+            line.mouseClicked(x, y, z);
         }
     }
 
     public void updateCursorCounter() {
-        for (int i = 0; i < this.amount; i++) {
-            lines[i].updateCursorCounter();
+        for (GuiTextField line : this.lines) {
+            line.updateCursorCounter();
         }
     }
 
     public void textboxKeyTyped(char character, int code) {
-        for (int i = 0; i < this.amount; i++) {
-            lines[i].textboxKeyTyped(character, code);
+        for (GuiTextField line : this.lines) {
+            line.textboxKeyTyped(character, code);
         }
     }
 }
