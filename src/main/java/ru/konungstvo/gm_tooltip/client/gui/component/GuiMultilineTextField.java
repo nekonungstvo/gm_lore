@@ -2,106 +2,102 @@ package ru.konungstvo.gm_tooltip.client.gui.component;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ChatAllowedCharacters;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.util.AbstractList;
+import java.util.List;
 
 public class GuiMultilineTextField extends Gui {
-    private int shift = 0;
-    private int line = 0;
+    private final FontRenderer fontRenderer;
 
-    private GuiTextField[] guiLines;
-    private ArrayList<String> lines = new ArrayList<String>();
+    private final int xPosition;
+    private final int yPosition;
+    private final int width;
+    private final int height;
+
+    private int cursorCounter = 0;
+    private String text = "";
+
+    private boolean isFocused = false;
 
     public GuiMultilineTextField(FontRenderer fontRenderer, int xPosition, int yPosition, int width, int height) {
-        int amount = height / fontRenderer.FONT_HEIGHT;
-        this.guiLines = new GuiTextField[amount];
-        for (int i = 0; i < amount; i++) {
-            guiLines[i] = new GuiTextField(
-                    fontRenderer,
-                    xPosition,
-                    yPosition + i * fontRenderer.FONT_HEIGHT,
-                    width,
-                    fontRenderer.FONT_HEIGHT
-            );
-        }
+        this.fontRenderer = fontRenderer;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        this.width = width;
+        this.height = height;
     }
 
-    private void writeToGuiLines() {
-        for (int i = 0; i < this.guiLines.length; i++) {
-            int line = this.shift + i;
+    public void draw() {
+        drawRect(
+                this.xPosition - 1,
+                this.yPosition - 1,
+                this.xPosition + this.width + 1,
+                this.yPosition + this.height + 1,
+                Color.GRAY.getRGB()
+        );
 
-            if (line < lines.size())
-                this.guiLines[i].setText(this.lines.get(line));
-        }
-    }
+        drawRect(
+                this.xPosition,
+                this.yPosition,
+                this.xPosition + this.width,
+                this.yPosition + this.height,
+                Color.BLACK.getRGB()
+        );
 
-    private void readFromGuiLines() {
-        for (int i = this.lines.size(); i < this.line; i++) {
-            this.lines.add("");
-        }
-
-        for (int i = 0; i < this.line - shift; i++) {
-            GuiTextField guiLine = this.guiLines[i];
-            this.lines.set(this.shift + i, guiLine.getText());
-        }
-    }
-
-    private void moveToLine(int line) {
-        if (line == this.line || line < 0) return;
-
-        int relative_new = line - this.shift;
-        int relative_old = this.line - this.shift;
-        boolean new_shift = relative_new >= this.guiLines.length || relative_new < 0;
-
-        if (new_shift) {
-            this.shift = this.shift + (line - this.line);
-            relative_new = line - this.shift;
-        }
-
-        this.line = line;
-
-        this.guiLines[relative_old].setFocused(false);
-        this.guiLines[relative_new].setFocused(true);
-
-        if (new_shift) this.writeToGuiLines();
-    }
-
-    public void drawTextBox() {
-        for (GuiTextField guiLine : this.guiLines) {
-            guiLine.drawTextBox();
-        }
+        this.fontRenderer.drawSplitString(
+                text,
+                1 + xPosition,
+                yPosition,
+                width -1,
+                Color.WHITE.getRGB()
+        );
     }
 
     public void mouseClicked(int x, int y, int z) {
-        for (int i = 0; i < guiLines.length; i++) {
-            GuiTextField guiLine = this.guiLines[i];
-
-            guiLine.mouseClicked(x, y, z);
-            if (guiLine.isFocused()) moveToLine(shift + i);
-        }
+        this.isFocused = x >= this.xPosition && x < this.xPosition + this.width;
+        this.isFocused &= y >= this.yPosition && y < this.yPosition + this.height;
     }
 
     public void updateCursorCounter() {
-        for (GuiTextField guiLine : this.guiLines) {
-            guiLine.updateCursorCounter();
-        }
+        ++cursorCounter;
     }
 
-    public void textboxKeyTyped(char character, int code) {
+    public boolean keyTyped(char character, int code) {
+        if (!isFocused) return false;
+
+        if (code == 47 && GuiScreen.isCtrlKeyDown()) {
+            this.write(GuiScreen.getClipboardString());
+            return true;
+        }
+
         switch (code) {
-            case 200:
-                this.moveToLine(this.line - 1);
-                break;
-            case 208:
-                this.moveToLine(this.line + 1);
-                break;
+            case 14:
+                this.backspace();
+                return true;
+            case 28:
+            case 156:
+                this.write("\n");
+                return true;
             default:
-                for (GuiTextField guiLine : this.guiLines) {
-                    guiLine.textboxKeyTyped(character, code);
+                if (ChatAllowedCharacters.isAllowedCharacter(character)) {
+                    this.write(Character.toString(character));
+                    return true;
                 }
         }
 
-        this.readFromGuiLines();
+        return false;
+    }
+
+    private void backspace() {
+        if (this.text.length() > 0) {
+            this.text = new StringBuilder(text).deleteCharAt(this.text.length() - 1).toString();
+        }
+    }
+
+    private void write(String addition) {
+        this.text = new StringBuilder(text).insert(this.text.length(), addition).toString();
     }
 }

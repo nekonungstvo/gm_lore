@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ru.konungstvo.gm_tooltip.client.gui.component.GuiMultilineTextField;
-import ru.konungstvo.gm_tooltip.common.LoreContainer;
+import ru.konungstvo.gm_tooltip.common.inventory.LoreContainer;
 
 @SideOnly(Side.CLIENT)
 public class LoreGui extends GuiContainer {
@@ -67,9 +67,10 @@ public class LoreGui extends GuiContainer {
 
     @Override
     protected void keyTyped(char character, int code) {
-        super.keyTyped(character, code);
-        this.nameField.textboxKeyTyped(character, code);
-        this.loreField.textboxKeyTyped(character, code);
+        boolean processed = this.nameField.textboxKeyTyped(character, code);
+        processed |= loreField.keyTyped(character, code);
+
+        if (!processed) super.keyTyped(character, code);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class LoreGui extends GuiContainer {
         this.drawTexturedModalRect(shiftX, shiftY, 0, 0, this.xSize, this.ySize);
 
         this.nameField.drawTextBox();
-        this.loreField.drawTextBox();
+        this.loreField.draw();
     }
 
 }

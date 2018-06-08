@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import ru.konungstvo.gm_tooltip.client.gui.LoreGui;
+import ru.konungstvo.gm_tooltip.common.inventory.LoreContainer;
 
 public class LoreGuiHandler implements IGuiHandler {
     @Override

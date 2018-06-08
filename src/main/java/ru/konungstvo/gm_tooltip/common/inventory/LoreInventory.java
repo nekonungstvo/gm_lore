@@ -1,4 +1,4 @@
-package ru.konungstvo.gm_tooltip.common;
+package ru.konungstvo.gm_tooltip.common.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
