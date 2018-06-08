@@ -17,10 +17,13 @@ public class GuiMultilineTextField extends Gui {
     private final int width;
     private final int height;
 
-    private int cursorCounter = 0;
     private String text = "";
 
     private boolean isFocused = false;
+
+    private int cursorPosition = 0;
+    private int cursorCounter = 0;
+
 
     public GuiMultilineTextField(FontRenderer fontRenderer, int xPosition, int yPosition, int width, int height) {
         this.fontRenderer = fontRenderer;
@@ -30,7 +33,11 @@ public class GuiMultilineTextField extends Gui {
         this.height = height;
     }
 
-    public void draw() {
+    private String getDisplayedText() {
+        return this.text.substring(0, cursorPosition);
+    }
+
+    private void drawBackground() {
         drawRect(
                 this.xPosition - 1,
                 this.yPosition - 1,
@@ -46,7 +53,9 @@ public class GuiMultilineTextField extends Gui {
                 this.yPosition + this.height,
                 Color.BLACK.getRGB()
         );
+    }
 
+    private void drawText() {
         this.fontRenderer.drawSplitString(
                 text,
                 1 + xPosition,
@@ -54,6 +63,38 @@ public class GuiMultilineTextField extends Gui {
                 width -1,
                 Color.WHITE.getRGB()
         );
+    }
+
+    private void drawCursor() {
+        boolean is_visible = cursorCounter % 16 > 4;
+
+        if (is_visible && this.isFocused) {
+            String displayedText = this.getDisplayedText();
+
+            AbstractList<String> lines = (AbstractList<String>) this.fontRenderer.listFormattedStringToWidth(
+                    displayedText,
+                    this.width
+            );
+
+            String current_line = lines.get(lines.size() - 1);
+
+            int xShift = this.fontRenderer.getStringWidth(current_line);
+            int yShift = this.fontRenderer.FONT_HEIGHT * (lines.size() - 1);
+
+            drawRect(
+                    this.xPosition + xShift,
+                    this.yPosition + yShift,
+                    this.xPosition + xShift + 2,
+                    this.yPosition + yShift + fontRenderer.FONT_HEIGHT,
+                    Color.LIGHT_GRAY.getRGB()
+            );
+        }
+    }
+
+    public void draw() {
+        this.drawBackground();
+        this.drawText();
+        this.drawCursor();
     }
 
     public void mouseClicked(int x, int y, int z) {
@@ -94,10 +135,12 @@ public class GuiMultilineTextField extends Gui {
     private void backspace() {
         if (this.text.length() > 0) {
             this.text = new StringBuilder(text).deleteCharAt(this.text.length() - 1).toString();
+            this.cursorPosition--;
         }
     }
 
     private void write(String addition) {
         this.text = new StringBuilder(text).insert(this.text.length(), addition).toString();
+        this.cursorPosition += addition.length();
     }
 }
